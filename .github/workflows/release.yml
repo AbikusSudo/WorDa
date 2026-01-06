@@ -20,7 +20,6 @@ jobs:
       
       - name: Check for gradlew
         run: |
-          ls -la | grep -i gradlew
           find . -name "gradlew*" -type f
       
       - name: Setup JDK
@@ -35,47 +34,32 @@ jobs:
           packages: 'platform-tools platforms;android-34 build-tools;34.0.0 ndk;25.0.8775105'
           accept-android-sdk-licenses: true
       
-      - name: Build with gradle wrapper or system gradle
+      - name: Build with gradle
         run: |
           echo "sdk.dir=${ANDROID_HOME}" > local.properties
-          echo "ndk.dir=${ANDROID_HOME}/ndk/25.0.8775105" >> local.properties
           
-          # Проверяем наличие gradlew
           if [ -f "./gradlew" ]; then
             chmod +x ./gradlew
             GRADLE_CMD="./gradlew"
-          elif [ -f "app/gradlew" ]; then
-            chmod +x app/gradlew
-            GRADLE_CMD="app/gradlew"
+          elif [ -f "gradlew" ]; then
+            chmod +x gradlew
+            GRADLE_CMD="./gradlew"
           else
-            echo "gradlew не найден, используем системный gradle"
+            echo "Устанавливаем gradle"
+            sudo apt-get install -y gradle
             GRADLE_CMD="gradle"
           fi
           
-          echo "Используем: $GRADLE_CMD"
-          $GRADLE_CMD --version || echo "Gradle не установлен"
+          $GRADLE_CMD --version
           
-          # Пробуем сборку
           $GRADLE_CMD tasks || true
           
-          # Пробуем разные цели сборки
-          for target in assembleDebug app:assembleDebug assembleRelease build; do
-            if $GRADLE_CMD tasks --all | grep -q "$target"; then
-              echo "Найдена цель: $target"
-              $GRADLE_CMD $target
-              break
-            fi
-          done
+          $GRADLE_CMD assembleDebug || $GRADLE_CMD build || $GRADLE_CMD assemble
           
-          # Ищем APK
           APK_PATH=$(find . -name "*.apk" -type f 2>/dev/null | head -1)
           
           if [ -z "$APK_PATH" ]; then
-            echo "APK не найден"
-            find . -name "build" -type d | head -5 | while read dir; do
-              echo "Проверяем $dir"
-              ls -la "$dir" 2>/dev/null || true
-            done
+            find . -type f -name "*.apk" 2>/dev/null
             exit 1
           fi
           
