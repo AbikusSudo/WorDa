@@ -18,6 +18,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
       
+      - name: Check for gradlew
+        run: |
+          ls -la | grep -i gradlew
+          find . -name "gradlew*" -type f
+      
       - name: Setup JDK
         uses: actions/setup-java@v4
         with:
@@ -30,33 +35,46 @@ jobs:
           packages: 'platform-tools platforms;android-34 build-tools;34.0.0 ndk;25.0.8775105'
           accept-android-sdk-licenses: true
       
-      - name: Make gradlew executable
-        run: |
-          chmod +x gradlew
-          ./gradlew --version
-      
-      - name: Build APK
+      - name: Build with gradle wrapper or system gradle
         run: |
           echo "sdk.dir=${ANDROID_HOME}" > local.properties
           echo "ndk.dir=${ANDROID_HOME}/ndk/25.0.8775105" >> local.properties
           
-          ./gradlew tasks --all || true
-          
-          if ./gradlew tasks --all | grep -q "assembleDebug"; then
-            ./gradlew assembleDebug
-          elif ./gradlew tasks --all | grep -q "app:assembleDebug"; then
-            ./gradlew app:assembleDebug
-          elif ./gradlew tasks --all | grep -q "assembleRelease"; then
-            ./gradlew assembleRelease
+          # Проверяем наличие gradlew
+          if [ -f "./gradlew" ]; then
+            chmod +x ./gradlew
+            GRADLE_CMD="./gradlew"
+          elif [ -f "app/gradlew" ]; then
+            chmod +x app/gradlew
+            GRADLE_CMD="app/gradlew"
           else
-            ./gradlew build
+            echo "gradlew не найден, используем системный gradle"
+            GRADLE_CMD="gradle"
           fi
           
+          echo "Используем: $GRADLE_CMD"
+          $GRADLE_CMD --version || echo "Gradle не установлен"
+          
+          # Пробуем сборку
+          $GRADLE_CMD tasks || true
+          
+          # Пробуем разные цели сборки
+          for target in assembleDebug app:assembleDebug assembleRelease build; do
+            if $GRADLE_CMD tasks --all | grep -q "$target"; then
+              echo "Найдена цель: $target"
+              $GRADLE_CMD $target
+              break
+            fi
+          done
+          
+          # Ищем APK
           APK_PATH=$(find . -name "*.apk" -type f 2>/dev/null | head -1)
           
           if [ -z "$APK_PATH" ]; then
-            find . -type d -name "build" | while read dir; do
-              find "$dir" -type f -name "*.apk" 2>/dev/null
+            echo "APK не найден"
+            find . -name "build" -type d | head -5 | while read dir; do
+              echo "Проверяем $dir"
+              ls -la "$dir" 2>/dev/null || true
             done
             exit 1
           fi
