@@ -29,19 +29,8 @@ WorDa — это универсальный клиент для защищённ
 
 ### Основные протоколы
 WorDa поддерживает широкий спектр протоколов для различных сценариев:
-| Категория | Протоколы | Особенности |
-| :--- | :--- | :--- |
-| **Современные/Рекомендуемые** | **WireGuard** | Высокая скорость, современное шифрование, стабильность. |
-| **Классические** | Shadowsocks, VMess, VLESS, Trojan | Широкая совместимость с существующей инфраструктурой. |
-| **Специализированные** | TUIC, Hysteria 1/2 | Оптимизированы для нестабильных сетей с высокой потерей пакетов. |
-| **Базовые** | SOCKS5, HTTP(S) | Универсальная поддержка. |
-
-### Ключевые возможности
--   **Гибкая маршрутизация (Split Tunneling):** Настройте, какие приложения используют VPN, а какие работают с обычным интернетом.
--   **Надёжный аварийный выключатель (Kill Switch):** Блокирует весь трафик при неожиданном разрыве VPN-соединения, предотвращая утечки.
--   **Детальная статистика:** Отслеживание использованного трафика за сессию, день или месяц.
--   **Импорт конфигураций:** Поддержка множества форматов подписок и ручного добавления серверов.
--   **Тёмная тема:** Элегантный интерфейс, берегущий глаза, активирован по умолчанию.
+Если не грузит, используйте (эту)[http://cdn-0.plantuml.com/plantuml/png/PLLDJnDT6DttLzmbBwy6CN5FWaODVX2duj9Cw4H6sXaoRKFSqVAT4X1rOKmKr8qRasbXxCUqy1Vk_KUUvypSja4DuNxSUvvpddFki52jkL6juWUbYhjHgAxxmOORkHLL2ODmTIqAAvwgHNLlQkT5M0zAYs4KU96QlrCepAfNONJVLIlBpvJ-ebFTquaUcMPXTbRfCtsbB_4_CLlw3tOwEiRkqBHqelGr5gzC4qS6-4bD2rTmvpic7MpXd2012wVdz3acE9SlNffj2oItGCAFl8TrDoeL_iU_rqf_C2tJ87PiJXI6kCo23TCqH_RKFyKmJvGvq3sp8wV9U2IQnZTC4qjjBANc25iMK4XGVuo51kxlwuHLUvQYi-QMmirgkBfUpHPMddfLEtpom76oOJ4Atxg1BVSBI5jJCaW9NAKge8UsFhOKHjlcCD_hO7miCzrNE3YYdfY7jz2y0Nvl4xblstwDctiu6jF4BWlR1j24dD_BnulPwD6xQisBV5VDpzsrVB_1LXAx0G40XI2a404uKfnk8ypQ5NK9bi7Oelq6wnqndfWTeZ0tFGM1rc1em2gpXA0nMi0U40pLCtsdMEhATAB4URwuvDpBjHIBopFEVxRmJvhU4JmKYJEIj03Oqvc6BuNSURGRdcS5G0_7kk8F3Z4b8Y6ZyX7GxTnHd8XHuq1CeSWkvd01MpFEHjclgM8z2Boo7xmPa_jgVHJbWfFtHAUibf1xtxPRR4SvT0VD4uQCUvSFbdTwIgG9X3dHGucDq6GPlBDJ88hxm8l5IHRgsoKHEyYbn_GEdL8pItwvh9nDlxQwDcPzIde3cmdofeWO5lUcP6ICkw3J4WU4w6qwdK0Haao1Q905FgEWI_hV8TvXTWHtsTI4lWpG49jbivj9_CICJDkR1LESu8Yynja6tGPK9FPRPelSK04BcUNyGt1y2vM5aJd2A7kx9sOlO_0P2qWKn3OLepmYpWKV9vCmUGrdDvCdQ2FntBvvBE4wq1Whfjy6zbeKYG4MxHmbzlCFddHFjsbmEkbTWvNu22Rlw0SICRJD4iDHQVnSUVk2pxrf8zBZ11XyoNtJG1FQMGefyv1XnQrKN9-0lH-_-kaFKKmzy9LFAuK2ke3CBdX1AVz3zXS0] сыллку.
+!(Поддерживаемые протоколы и функции)[http://cdn-0.plantuml.com/plantuml/png/PLLDJnDT6DttLzmbBwy6CN5FWaODVX2duj9Cw4H6sXaoRKFSqVAT4X1rOKmKr8qRasbXxCUqy1Vk_KUUvypSja4DuNxSUvvpddFki52jkL6juWUbYhjHgAxxmOORkHLL2ODmTIqAAvwgHNLlQkT5M0zAYs4KU96QlrCepAfNONJVLIlBpvJ-ebFTquaUcMPXTbRfCtsbB_4_CLlw3tOwEiRkqBHqelGr5gzC4qS6-4bD2rTmvpic7MpXd2012wVdz3acE9SlNffj2oItGCAFl8TrDoeL_iU_rqf_C2tJ87PiJXI6kCo23TCqH_RKFyKmJvGvq3sp8wV9U2IQnZTC4qjjBANc25iMK4XGVuo51kxlwuHLUvQYi-QMmirgkBfUpHPMddfLEtpom76oOJ4Atxg1BVSBI5jJCaW9NAKge8UsFhOKHjlcCD_hO7miCzrNE3YYdfY7jz2y0Nvl4xblstwDctiu6jF4BWlR1j24dD_BnulPwD6xQisBV5VDpzsrVB_1LXAx0G40XI2a404uKfnk8ypQ5NK9bi7Oelq6wnqndfWTeZ0tFGM1rc1em2gpXA0nMi0U40pLCtsdMEhATAB4URwuvDpBjHIBopFEVxRmJvhU4JmKYJEIj03Oqvc6BuNSURGRdcS5G0_7kk8F3Z4b8Y6ZyX7GxTnHd8XHuq1CeSWkvd01MpFEHjclgM8z2Boo7xmPa_jgVHJbWfFtHAUibf1xtxPRR4SvT0VD4uQCUvSFbdTwIgG9X3dHGucDq6GPlBDJ88hxm8l5IHRgsoKHEyYbn_GEdL8pItwvh9nDlxQwDcPzIde3cmdofeWO5lUcP6ICkw3J4WU4w6qwdK0Haao1Q905FgEWI_hV8TvXTWHtsTI4lWpG49jbivj9_CICJDkR1LESu8Yynja6tGPK9FPRPelSK04BcUNyGt1y2vM5aJd2A7kx9sOlO_0P2qWKn3OLepmYpWKV9vCmUGrdDvCdQ2FntBvvBE4wq1Whfjy6zbeKYG4MxHmbzlCFddHFjsbmEkbTWvNu22Rlw0SICRJD4iDHQVnSUVk2pxrf8zBZ11XyoNtJG1FQMGefyv1XnQrKN9-0lH-_-kaFKKmzy9LFAuK2ke3CBdX1AVz3zXS0]
 
 ---
 
@@ -68,13 +57,8 @@ WorDa поддерживает широкий спектр протоколов 
 ---
 
 ## ❗ Частые проблемы и их решение
-
-| Проблема | Возможная причина | Решение |
-| :--- | :--- | :--- |
-| **"Нет подключения к интернету" при активном VPN** | Неверная конфигурация или блокировка на стороне провайдера. | 1. Проверьте параметры сервера и ключи.<br>2. Попробуйте другой протокол (например, переключитесь с Exclave на WireGuard).<br>3. Проверьте работу Split Tunneling (он может направлять весь трафик мимо VPN). |
-| **Высокий разряд батареи** | Активная работа в фоне, особенно с некоторыми экспериментальными протоколами. | 1. В настройках Android отключите фоновую активность для WorDa.<br>2. Убедитесь, что приложение не переподключается в бесконечном цикле из-за плохого сигнала. |
-| **Не импортируется подпику** | Неподдерживаемый формат или нерабочая ссылка. | 1. Убедитесь, что ссылка доступна и не требует авторизации.<br>2. Попробуйте скопировать содержимое ссылки вручную как конфигурацию sing-box. |
-| **Приложение закрывается** | Недостаточно памяти или конфликт с другим ПО. | 1. Перезагрузите устройство.<br>2. Убедитесь, что у вас установлена последняя версия WorDa. |
+Если не грузит, используйте (эту)[http://www.plantuml.com/plantuml/png/ZLHBZjD05Dpx56y98t61MSq6SG2GM9k91HQn4pa9ccMSe04fA4QpvuEuG9E99qwSpnLUNu6JKALs1v1YAPl4_VogNhtgagy6mp0R9d7QIS9-C7WRf_qm2nD9Ucdl-atMIo8PPgCe22v4lzcnxlMNrbhgriv4Aq6bj1zntcbbY-02NLzGcOWUqBhKZTPsRZ_yqz3mL2XMA9fB8K8NG8rvjeK0jTUTVO-6Upj5sTXRZmRy-z-HMbvwMIGWxSH-4Z-M0dFMcxUcXU67Rddow0C9xGIa55BBewStrztmNII_R-_aPPn5pqPXrdbyjfpd_Muyb1UZD8swSVgQBkcTdTcS4u1Q2xNfoevjeKk1mmRJ3RtLwhHbdtM3bWfZd6Ka06vFdEX2O1uirB95urVqUO-SHWUWS3W-5x0T1u0rPy_P-_AsICyGi5gU2eEkVLe4XorRx9WZyJjbX32qy34we9m3Rze3v1gNoe4FIk76nHJsSZcKj_Jr_10jcyMdu3wQ8FZBGLhpvbhZnDnGi-CqZc_1pQ1wvnpUq6CP811FNlLk_WjzS5nIQrGVFBVeYY3mp4ZhNMernQ-WngMPTXfuKj3dDYEQA-EaUohMbR_MARcuawxv10dx5fAVRgeBbFVpG35QKnOMdSC3vpUAbPq7Lr7QQRv3Vm00] сыллку
+![Диаграмма проблем и решений для WorDa](http://www.plantuml.com/plantuml/png/ZLHBZjD05Dpx56y98t61MSq6SG2GM9k91HQn4pa9ccMSe04fA4QpvuEuG9E99qwSpnLUNu6JKALs1v1YAPl4_VogNhtgagy6mp0R9d7QIS9-C7WRf_qm2nD9Ucdl-atMIo8PPgCe22v4lzcnxlMNrbhgriv4Aq6bj1zntcbbY-02NLzGcOWUqBhKZTPsRZ_yqz3mL2XMA9fB8K8NG8rvjeK0jTUTVO-6Upj5sTXRZmRy-z-HMbvwMIGWxSH-4Z-M0dFMcxUcXU67Rddow0C9xGIa55BBewStrztmNII_R-_aPPn5pqPXrdbyjfpd_Muyb1UZD8swSVgQBkcTdTcS4u1Q2xNfoevjeKk1mmRJ3RtLwhHbdtM3bWfZd6Ka06vFdEX2O1uirB95urVqUO-SHWUWS3W-5x0T1u0rPy_P-_AsICyGi5gU2eEkVLe4XorRx9WZyJjbX32qy34we9m3Rze3v1gNoe4FIk76nHJsSZcKj_Jr_10jcyMdu3wQ8FZBGLhpvbhZnDnGi-CqZc_1pQ1wvnpUq6CP811FNlLk_WjzS5nIQrGVFBVeYY3mp4ZhNMernQ-WngMPTXfuKj3dDYEQA-EaUohMbR_MARcuawxv10dx5fAVRgeBbFVpG35QKnOMdSC3vpUAbPq7Lr7QQRv3Vm00)
 
 ---
 
