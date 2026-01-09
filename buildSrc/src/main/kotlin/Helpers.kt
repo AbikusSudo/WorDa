@@ -18,7 +18,7 @@ private lateinit var localProperties: Properties
 fun Project.requireMetadata(): Properties {
     if (!::metadata.isInitialized) {
         metadata = Properties().apply {
-            load(rootProject.file("wb4a.properties").inputStream())
+            load(rootProject.file("wd4a.properties").inputStream())
         }
     }
     return metadata
@@ -219,3 +219,4 @@ fun Project.setupApp() {
     }
 
 }
+
