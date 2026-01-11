@@ -4,18 +4,40 @@ on: workflow_dispatch
 jobs:
   build:
     runs-on: ubuntu-latest
+    
     steps:
       - uses: actions/checkout@v4
       
-      - name: Setup Java
-        run: sudo apt-get install -y openjdk-17-jdk
+      - name: Setup Java (правильный способ)
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'  # или 'zulu', 'corretto'
+          java-version: '17'
+          cache: 'gradle'  # Автоматическое кэширование
       
-      - name: Build with gradle
+      - name: Make gradlew executable
+        run: chmod +x gradlew
+      
+      - name: Clean project (рекомендуется)
+        run: ./gradlew clean
+      
+      - name: Build with Gradle
         run: |
-          chmod +x gradlew
-          ./gradlew assembleDebug
+          ./gradlew assembleDebug \
+            --no-daemon \
+            --stacktrace \
+            --warning-mode=all
+        env:
+          # Увеличиваем память для компиляции
+          GRADLE_OPTS: "-Dorg.gradle.jvmargs=-Xmx4g -XX:MaxMetaspaceSize=512m"
+          # Отключаем инкрементальную компиляцию для стабильности
+          KOTLIN_INCREMENTAL: "false"
       
-      - uses: actions/upload-artifact@v4
+      # Только если сборка успешна
+      - name: Upload APK
+        if: success()
+        uses: actions/upload-artifact@v4
         with:
           name: app-debug
           path: app/build/outputs/apk/debug/*.apk
+          retention-days: 7
