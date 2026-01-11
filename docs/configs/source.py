@@ -11,7 +11,6 @@ import httpx
 import urllib3
 from urllib.parse import quote, urlsplit, urlunsplit, unquote
 from datetime import datetime
-from functools import lru_cache
 from collections import defaultdict
 
 URLS = [
@@ -144,7 +143,7 @@ URLS = [
     "https://raw.githubusercontent.com/miladtahanian/multi-proxy-config-fetcher/refs/heads/main/configs/proxy_configs.txt"
 ]
 
-OUTPUT_DIR = "docs/config/data"
+OUTPUT_DIR = "configs/data"
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 CHROME_UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/138.0.0.0 Safari/537.36"
