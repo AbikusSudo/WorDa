@@ -1,35 +1,38 @@
-name: Test Build
+name: Build
 on: [push]
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
         
-      - name: Setup Go
-        uses: actions/setup-go@v4
-        with:
-          go-version: '1.21'
-          
+      - name: Fix scripts
+        run: |
+          sed -i 's/\r$//' run
+          sed -i 's/\r$//' gradlew
+          chmod +x run gradlew
+        
       - name: Setup Java
         uses: actions/setup-java@v3
         with:
           distribution: 'temurin'
           java-version: '17'
-          
+        
+      - name: Setup Android
+        uses: android-actions/setup-android@v3
+        
       - name: Build libcore
-        run: |
-          chmod +x run
-          ./run lib core
-          
+        run: ./run lib core
+        
       - name: Build APK
         run: |
+          echo "sdk.dir=${ANDROID_HOME}" > local.properties
+          echo "ndk.dir=${ANDROID_NDK_HOME}" >> local.properties
           ./gradlew assembleDebug
-          
-      - name: Upload result
+        
+      - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: apks
-          path: app/build/outputs/apk/
+          name: app-debug
+          path: app/build/outputs/apk/debug/
