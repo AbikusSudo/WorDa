@@ -1,43 +1,35 @@
-name: Simple Build
-on: workflow_dispatch
+name: Test Build
+on: [push]
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    
     steps:
-      - uses: actions/checkout@v4
-      
-      - name: Setup Java (правильный способ)
-        uses: actions/setup-java@v4
+      - name: Checkout
+        uses: actions/checkout@v4
+        
+      - name: Setup Go
+        uses: actions/setup-go@v4
         with:
-          distribution: 'temurin'  # или 'zulu', 'corretto'
+          go-version: '1.21'
+          
+      - name: Setup Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
           java-version: '17'
-          cache: 'gradle'  # Автоматическое кэширование
-      
-      - name: Make gradlew executable
-        run: chmod +x gradlew
-      
-      - name: Clean project (рекомендуется)
-        run: ./gradlew clean
-      
-      - name: Build with Gradle
+          
+      - name: Build libcore
         run: |
-          ./gradlew assembleDebug \
-            --no-daemon \
-            --stacktrace \
-            --warning-mode=all
-        env:
-          # Увеличиваем память для компиляции
-          GRADLE_OPTS: "-Dorg.gradle.jvmargs=-Xmx4g -XX:MaxMetaspaceSize=512m"
-          # Отключаем инкрементальную компиляцию для стабильности
-          KOTLIN_INCREMENTAL: "false"
-      
-      # Только если сборка успешна
-      - name: Upload APK
-        if: success()
+          chmod +x run
+          ./run lib core
+          
+      - name: Build APK
+        run: |
+          ./gradlew assembleDebug
+          
+      - name: Upload result
         uses: actions/upload-artifact@v4
         with:
-          name: app-debug
-          path: app/build/outputs/apk/debug/*.apk
-          retention-days: 7
+          name: apks
+          path: app/build/outputs/apk/
