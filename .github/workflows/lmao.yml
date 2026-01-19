@@ -21,14 +21,14 @@ jobs:
       - name: Setup Android
         uses: android-actions/setup-android@v3
         
-      - name: Build APK
+      - name: Build Play Debug APK
         run: |
           echo "sdk.dir=${ANDROID_HOME}" > local.properties
           echo "ndk.dir=${ANDROID_NDK_HOME}" >> local.properties
-          ./gradlew assembleDebug
+          ./gradlew assemblePlayDebug
         
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: app-debug
-          path: app/build/outputs/apk/debug/
+          name: app-play-debug
+          path: app/build/outputs/apk/play/debug/
